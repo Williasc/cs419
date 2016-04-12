@@ -13,7 +13,7 @@ int main() {
 	// testing some data structures
 	PlayerCharacter* pc = new PlayerCharacter("hero", 100, 200);
 	Character* c = new Character(1, "enemy", 50, 0);
-	Room* r = new Room(3, 5, 6, "my room", "an awesome room");
+	Room* r = new Room(3, 5, 6, "my room", "You find yourself in the middle of a large field surrounded by hills.");
 	GameMap* gm = new GameMap(Coord(7, 5));
 
 	r->insertAt(Coord(0,4), c);

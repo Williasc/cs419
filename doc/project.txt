@@ -1,0 +1,147 @@
+Game Data Structures
+
+
+
+struct Coord
+
+an (x,y) pair
+
+	int x, y
+
+
+
+class GameActor
+
+base class for all objects and characters found in game
+
+Fields:
+	id			int			ID as assigned in constructor call
+	name		string		name of the object
+
+Methods:
+	get/set methods:
+	int getId()
+	void setName(string name)
+	string getName()
+
+
+
+class Character : GameActor
+
+located in gameActor.h
+
+game object with capabilities for interaction, fighting, etc.
+
+Fields:
+	level			int			level achieved by character
+	health			int			amount of health the character has
+	magic			int			amount of magic the character has
+	inventory		multiset	all items the character possesses
+
+Methods:
+	int alterMagic( int amount )
+		add amount points to character's magic
+
+	int alterHealth( int amount )
+		add amount points to character health
+
+	int takeDamage( int damage )
+		subtract amount points from character health
+
+	bool isAlive()
+		returns true if character health greater than 0, false otherwise
+
+	getter/setter methods:
+	int getHealth()
+	int getMagic()
+	int getLevel()
+	void setHealth(int h)
+	void setMagic( int m )
+	void setLevel( int l )
+
+
+
+class PlayerCharacter : Character
+
+
+
+
+class Item
+
+inventory item that can be possessed by a character
+
+Fields
+	id				int		ID number supplied in constructor
+	value			int 	how many coins the item is worth
+	description		string 	text describing item
+	name			string	item name
+	weight			int 	item weight
+
+
+
+struct Space
+
+located in room.h
+
+One space in a room grid. Contains a pointer to a GameObject (may be null).
+
+Fields:
+	contents	GameObject*		what is in this space
+
+
+
+struct Room
+
+A room in the game. Has an integer ID as specified by constuctor call.
+call objectAt(x, y) to get a pointer to game object at (x, y)
+
+Fields:
+	id			integer ID of room
+	dimensions	Coord struct with the x and y dimensions
+	spaces		2D vector of all spaces in room
+
+Methods:
+	GameActor* objectAt( int x, int y )
+		Returns pointer to the object at room grid location (x, y), or null pointer
+		if there is no such object
+
+		getter/setter functions:
+		void setName( string name )
+		void setDescription( string desc )
+		string getName()
+		string getDescription()	
+
+
+
+class GameMap
+
+contains all the rooms in the game
+
+Fields:
+	dimensions	Coord						how many rooms in X and Y dimensions
+	rooms		vector< vector<Room*> >		grid of rooms
+
+
+
+
+struct GameState
+
+the current state of the game
+
+Fields:
+	GameMode mode						enum value specifying current game mode
+	bool IsGameAlive					true > playing game, false > game over
+	PlayerCharacter* playerCharacter	pointer to the player character object
+	GameMap* currentMap					pointer to the game map being used
+	Coord currentRoom					coords to room in map where player is
+
+
+
+
+class Game
+
+This class implements the basic mechanics of game play.
+
+Fields:
+	GameState* gameState		the current game state
+

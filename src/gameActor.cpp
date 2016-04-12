@@ -2,8 +2,6 @@
 #include "coord.h"
 #include "gameMap.h"
 
-// if we never need to know where a particular object is, we may not need the 
-// location field at all, but for now...
 
 
 int Character::alterHealth( int amount )

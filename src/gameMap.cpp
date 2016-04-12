@@ -5,7 +5,7 @@ GameMap::GameMap( Coord xy ) {
 	dimensions = xy;
 	vector<Room*> col(dimensions.y, 0);
 	rooms = vector<vector<Room*> >(dimensions.x, col);
-	startRoom = Coord(0, 0);
+	startRoomCoord = Coord(0, 0);
 }
 
 void GameMap::insertRoom( Room* r, Coord xy ) {
@@ -16,13 +16,14 @@ void GameMap::insertRoom( Room* r, Coord xy ) {
 	rooms[xy.x][xy.y] = r;
 }
 
+// for testing purposes
 void GameMap::print()
 {
 	printf("Map\n\n");
 	for(int j = 0; j < dimensions.y; j++) {
 		for(int i = 0; i < dimensions.x; i++) {
 			printf(" ");
-			if(i == startRoom.x && j == startRoom.y) {
+			if(i == startRoomCoord.x && j == startRoomCoord.y) {
 				printf("[S]");
 			}
 			else if(rooms[i][j] == 0) {

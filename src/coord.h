@@ -1,7 +1,9 @@
-// basic 2D int vector
-
 #ifndef COORD_H
 #define COORD_H
+
+#include <exception>
+
+// basic 2D int vector
 
 struct Coord {
 	int x, y;
@@ -21,6 +23,13 @@ struct Coord {
 		this->x = x;
 		this->y = y;
 	}
+};
+
+enum Direction {
+	Up,
+	Down,
+	Left,
+	Right
 };
 
 #endif

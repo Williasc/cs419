@@ -28,14 +28,19 @@ struct GameState {
 	bool IsGameAlive; // false == game over
 	PlayerCharacter* playerCharacter;
 	GameMap* currentMap;
-	Coord currentRoom;
+	Room* currentRoom;
+	Coord currentRoomCoord;
+	Coord playerLocationCoord;
 
 	GameState( PlayerCharacter* pc, GameMap* gm ) {
 		mode = Main;
 		IsGameAlive = true;
 		playerCharacter = pc;
 		currentMap = gm;
-		currentRoom = currentMap->getStartRoom();
+
+		currentRoomCoord = currentMap->getStartRoomCoord();
+		currentRoom = currentMap->at(currentRoomCoord);
+		playerLocationCoord = currentMap->at(currentRoomCoord)->spawnPoint;
 	}
 };
 

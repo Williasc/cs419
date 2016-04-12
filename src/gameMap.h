@@ -19,7 +19,7 @@ using namespace std;
 class GameMap {
 	Coord dimensions;
 	vector<vector<Room*> > rooms;
-	Coord startRoom; // default player spawn point
+	Coord startRoomCoord; // default player spawn point
 
 public:
 	GameMap( Coord );
@@ -30,10 +30,13 @@ public:
 		return dimensions;
 	}
 	void setStartRoom(Coord xy) {
-		startRoom = xy;
+		startRoomCoord = xy;
 	}
-	Coord getStartRoom() {
-		return startRoom;
+	Coord getStartRoomCoord() {
+		return startRoomCoord;
+	}
+	Room* at(Coord loc) {
+		return rooms.at(loc.x).at(loc.y);
 	}
 
 	void print();

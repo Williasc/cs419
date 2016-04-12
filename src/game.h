@@ -16,7 +16,9 @@ class Game
 
 Fields:
 	GameState* gameState		the current game state
+
 ***/
+
 class Game {
 private:
 	GameState* gameState;

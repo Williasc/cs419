@@ -73,9 +73,11 @@ struct Room {
 	Coord getDimensions() {
 		return dimensions;
 	}
-	GameActor* objectAt( int x, int y ) {
-		return spaces.at(x).at(y).contents;
+	GameActor* objectAt( Coord xy ) {
+		return spaces.at(xy.x).at(xy.y).contents;
 	}
+
+	bool isInBounds(Coord xy);
 
 	bool removeAt( Coord xy, GameActor* obj );
 	bool insertAt( Coord, GameActor* );

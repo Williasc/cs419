@@ -3,8 +3,8 @@ lFlags = -Wall -g -std=c++11
 
 all: main clean
 
-main: main.o gameActor.o room.o gameMap.o game.o item.o
-	g++ $(lFlags) -o main main.o gameActor.o room.o gameMap.o game.o item.o
+main: main.o gameActor.o room.o gameMap.o game.o item.o move.o
+	g++ $(lFlags) -o main main.o gameActor.o room.o gameMap.o game.o item.o move.o
 
 gameActor.o: gameActor.cpp gameActor.h
 	g++ $(cFlags) gameActor.cpp
@@ -20,6 +20,9 @@ game.o: game.cpp game.h
 
 item.o: item.cpp item.h
 	g++ $(cFlags) item.cpp
+	
+move.o: move.h move.cpp
+	g++ $(cFlags) move.cpp
 
 main.o: main.cpp game.h
 	g++ $(cFlags) main.cpp

@@ -63,12 +63,21 @@ void Room::print() {
 	printf("%s\n\n%s\n\n", name.c_str(), description.c_str());
 	for (int j = 0; j < dimensions.y; j++) {
 		for (int i = 0; i < dimensions.x; i++) {
-			if (objectAt(i, j) == 0) {
+			if (objectAt(Coord(i, j)) == 0) {
 				printf(" [ ] ");
 			} else {
-				printf(" [%c] ", objectAt(i, j)->symbol);
+				printf(" [%c] ", objectAt(Coord(i, j))->symbol);
 			}
 		}
 		printf("\n\n");
+	}
+}
+
+bool Room::isInBounds(Coord xy) {
+	if( xy.x < 0 || xy.x >= dimensions.x ||
+		xy.y < 0 || xy.y >= dimensions.y	) {
+		return false;
+	} else {
+		return true;
 	}
 }

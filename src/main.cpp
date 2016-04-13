@@ -1,6 +1,9 @@
 // main program
 
 #include <cstdio>
+#include <iostream>
+
+using namespace std;
 
 #include "coord.h"
 #include "gameActor.h"
@@ -21,10 +24,8 @@ int main() {
 
 	// Create a room to put into the map
 	Room* r = new Room(3, Coord(5, 6), Coord(2, 3), string("my room"),
-			string(
-					"You find yourself in the middle of a large field surrounded by hills. "
-					"To the north and east is a dense forest. An enemy lurks to the west."
-					) );
+			string("You find yourself in the middle of a large field surrounded by hills. To the "
+					"north and east is a dense forest. An enemy lurks above you to the west."));
 	// place our "enemy" character into our room
 	r->insertAt(Coord(0, 4), c);
 
@@ -39,4 +40,28 @@ int main() {
 	gm->print();
 	printf("\n\n\n");
 	r->print();
+
+	while (true) {
+		Direction d;
+		int c = getchar();
+		switch (c) {
+		case 'w':
+			d = Up;
+			break;
+		case 's':
+			d = Down;
+			break;
+		case 'a':
+			d = Left;
+			break;
+		case 'd':
+			d = Right;
+			break;
+		default:
+			continue;
+		}
+		g->movePlayer(d);
+		r->print();
+	}
+
 }

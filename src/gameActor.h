@@ -11,43 +11,39 @@
 using namespace std;
 
 /***
-class GameActor
+ class GameActor
 
-base class for all objects and characters found in game
+ base class for all objects and characters found in game
 
-Fields:
-	id			int			ID as assigned in constructor call
-	name		string		name of the object
+ Fields:
+ id			int			ID as assigned in constructor call
+ name		string		name of the object
 
-Methods:
-	get/set methods:
-	int getId()
-	void setName(string name)
-	string getName()
-***/
+ Methods:
+ get/set methods:
+ int getId()
+ void setName(string name)
+ string getName()
+ ***/
 class GameActor {
 private:
 	int id;
 	string name;
 
 public:
-	GameActor( int id, string name )
-	{
+	GameActor( int id, string name ) {
 		this->id = id;
 		this->name = name;
 		symbol = ' ';
 	}
 
-	int getId()
-	{
+	int getId() {
 		return id;
 	}
-	void setName(string name)
-	{
+	void setName( string name ) {
 		this->name = name;
 	}
-	string getName()
-	{
+	string getName() {
 		return name;
 	}
 
@@ -55,123 +51,117 @@ public:
 	char symbol;
 };
 
-
-
 /* ***
-class Item
+ class Item
 
-game object that can be possessed by a character
+ game object that can be possessed by a character
 
-Fields
-	value			int		how many coins the item is worth
-	description		string	text describing item
+ Fields
+ value			int		how many coins the item is worth
+ description		string	text describing item
 
-// Actually, I think maybe this shouldn't be a GameActor
-// commenting this class out
+ // Actually, I think maybe this shouldn't be a GameActor
+ // commenting this class out
 
-class Item : public GameActor {
-private:
-	int value;
+ class Item : public GameActor {
+ private:
+ int value;
 
-public:
-	Item( int objId, string objName, int itemValue )
-		: GameActor( objId, objName )
-	{
-		value = itemValue;
-	}
-};
-***/
-
+ public:
+ Item( int objId, string objName, int itemValue )
+ : GameActor( objId, objName )
+ {
+ value = itemValue;
+ }
+ };
+ ***/
 
 /***
-class Character
+ class Character
 
-game object with capabilities for interaction, fighting, etc.
+ game object with capabilities for interaction, fighting, etc.
 
-Fields:
-	level			int			level achieved by character
-	health			int			amount of health the character has
-	magic			int			amount of magic the character has
-	inventory		multiset	all items the character possesses
+ Fields:
+ level			int			level achieved by character
+ health			int			amount of health the character has
+ magic			int			amount of magic the character has
+ inventory		multiset	all items the character possesses
 
-Methods:
-	int alterMagic( int amount )
-	add amount points to character's magic
+ Methods:
+ int alterMagic( int amount )
+ add amount points to character's magic
 
-	int alterHealth( int amount )
-	add amount points to character health
+ int alterHealth( int amount )
+ add amount points to character health
 
-	int takeDamage( int damage )
-	subtract amount points from character health
+ int takeDamage( int damage )
+ subtract amount points from character health
 
-	bool isAlive()
-	returns true if character health greater than 0, false otherwise
+ bool isAlive()
+ returns true if character health greater than 0, false otherwise
 
-getter/setter methods:
-	int getHealth()
-	int getMagic()
-	int getLevel()
-	void setHealth(int h)
-	void setMagic( int m )
-	void setLevel( int l )
+ getter/setter methods:
+ int getHealth()
+ int getMagic()
+ int getLevel()
+ void setHealth(int h)
+ void setMagic( int m )
+ void setLevel( int l )
 
-***/
-class Character : public GameActor {
+ ***/
+class Character: public GameActor {
 private:
+	bool isFriendly;
 	int level;
 	int health;
 	int magic;
 
-
 public:
-	Character( int objId, string objName, int initHealth, int initMagic )
-		: GameActor( objId, objName )
-	{
+	Character( int objId, string objName, int initHealth, int initMagic, bool friendly ) :
+			GameActor(objId, objName) {
 		level = 1;
 		health = initHealth;
 		magic = initMagic;
-
 		symbol = 'C';
+		isFriendly = friendly;
 	}
 
 	/*
-	// not sure how to do this copy constructor
-	Character( Character& c ) : GameActor(c.getId, c.getName)
-	{
-		level = c.level;
-		health = c.health;
-		magic = c.magic;
-	}
-	*/
+	 // not sure how to do this copy constructor
+	 Character( Character& c ) : GameActor(c.getId, c.getName)
+	 {
+	 level = c.level;
+	 health = c.health;
+	 magic = c.magic;
+	 }
+	 */
 
-	void setHealth( int h )
-	{
+	void setHealth( int h ) {
 		health = h;
 	}
-	void setMagic( int m )
-	{
+	void setMagic( int m ) {
 		magic = m;
 	}
-	void setLevel( int l )
-	{
+	void setLevel( int l ) {
 		level = l;
 	}
-
-	int getHealth()
-	{
+	void setFriendly(bool f) {
+		isFriendly = f;
+	}
+	int getHealth() {
 		return health;
 	}
-	int getMagic()
-	{
+	int getMagic() {
 		return magic;
 	}
-	int getLevel()
-	{
+	int getLevel() {
 		return level;
 	}
+	bool getIsFriendly() {
+		return isFriendly;
+	}
 
-	bool isAlive()
-	{
+	bool isAlive() {
 		return health > 0;
 	}
 
@@ -182,24 +172,22 @@ public:
 	int alterHealth( int amount );
 
 	// if character's health is damaged, subtract damage amount
-	int takeDamage( int damage )
-	{
-		return alterHealth( -damage );
+	int takeDamage( int damage ) {
+		return alterHealth(-damage);
 	}
 };
 
 /***
-class PlayerCharacter
+ class PlayerCharacter
 
-the player character
-***/
-class PlayerCharacter : public Character {
+ the player character
+ ***/
+class PlayerCharacter: public Character {
 private:
 	//Fields?
 public:
-	PlayerCharacter( string playerName, int initPlayerHealth, int initPlayerMagic )
-		: Character( 0, playerName, initPlayerHealth, initPlayerMagic )
-	{
+	PlayerCharacter( string playerName, int initPlayerHealth, int initPlayerMagic ) :
+			Character(0, playerName, initPlayerHealth, initPlayerMagic, true) {
 		symbol = 'P';
 	}
 };

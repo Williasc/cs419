@@ -1,61 +1,79 @@
 /***
- main Game class
+ Game class
 
- This class implements the basic mechanics of game play.
+ This class is the heart of the game model and should
+ encompass/contain all aspects of the game state
  ***/
 
 #ifndef GAME_H
 #define GAME_H
 
-#include "gameState.h"
+#include "gameMap.h"
 #include "move.h"
+#include "event.h"
+
+// GameMode
+// What phase of the game is the player in?
+// Add more as needed
+enum GameMode {
+	Exploration, Conversation, Combat
+};
 
 /***
  class Game
 
- "Master" game class
+ "Master" model class
 
  Fields:
- GameState* gameState		the current game state
+	 GameMode mode						enum value specifying current game mode
+	 bool IsGameAlive					true > playing game, false > game over
+	 PlayerCharacter* playerCharacter	pointer to the player character object
+	 GameMap* currentMap					pointer to the game map being used
+	 Coord currentRoom					coords to room in map where player is
 
  ***/
 
 class Game {
 private:
-	GameState* gameState;
+	GameMode mode;
+	bool IsGameAlive; 	// false == game over
+	PlayerCharacter* playerCharacter;
+	GameMap* currentMap;
+	Room* currentRoom;
+	Coord currentRoomCoord;
+	Coord playerLocationCoord;
 
 	// move GameActor at this coord in direction d if possible
 	// Should we have this method take GameActor* as argument instead?
-	bool moveActor(Coord from, Direction d);
+	Event moveActor(Coord from, Direction d);
 
 public:
 	Game( PlayerCharacter* p, GameMap* m );
 
 	// move player character in direction d
-	bool movePlayer(Direction d);
+	Event movePlayer(Direction d);
 
-	bool moveCharacter(Coord from, Direction d) {
-		moveActor(from, d);
+	Event moveCharacter(Coord from, Direction d) {
+		return moveActor(from, d);
 	}
 
 	// get/set methods
 	GameMode getMode() {
-		return gameState->mode;
+		return mode;
 	}
 	void setMode(GameMode m) {
-		gameState->mode = m;
+		mode = m;
 	}
 	GameMap* getMap() {
-			return gameState->currentMap;
+		return currentMap;
 	}
-	void setMap(GameMap* m) {
-		gameState->currentMap = m;
-	}
+	void setMap(GameMap* m);
+
 	Coord getCurrentRoomCoord() {
-		return gameState->currentRoomCoord;
+		return currentRoomCoord;
 	}
 	Coord getPlayerLocationCoord() {
-		return gameState->playerLocationCoord;
+		return playerLocationCoord;
 	}
 
 

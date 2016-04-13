@@ -1,3 +1,5 @@
+// ignore this file: PROBABLY GETTING RID OF GameState STRUCT
+
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 #include "gameMap.h"

@@ -1,38 +1,49 @@
 // Game class implemented
 
 #include "game.h"
-#include "gameState.h"
+#include "gameExceptions.h"
+//#include "gameState.h"
 
 Game::Game( PlayerCharacter* p, GameMap* m ) {
-	gameState = new GameState(p, m);
-	gameState->currentRoom->insertAt(gameState->playerLocationCoord, gameState->playerCharacter);
+	mode = Exploration;
+	IsGameAlive = true;
+	playerCharacter = p;
+	setMap(m);
 }
 
-// attempt to move the character in Direction d
-bool Game::moveActor( Coord from, Direction d ) {
-	if (!gameState->currentRoom->isInBounds(from)) {
-		return false;
+void Game::setMap( GameMap* m ) {
+	currentMap = m;
+	currentRoomCoord = currentMap->getStartRoomCoord();
+	currentRoom = currentMap->at(currentRoomCoord);
+	playerLocationCoord = currentMap->at(currentRoomCoord)->spawnPoint;
+	if(!currentRoom->insertAt(playerLocationCoord, playerCharacter)) {
+		throw(unableToSpawnException("Can't insert player character at spawn point"));
 	}
-	GameActor* actor = gameState->currentRoom->objectAt(from);
+}
+
+// attempt to move the actor (located at from) in Direction d
+Event Game::moveActor( Coord from, Direction d ) {
+	if (!currentRoom->isInBounds(from)) {
+		return Event(NullEvent, 0);
+	}
+	GameActor* actor = currentRoom->objectAt(from);
 	Coord target = move(from, d);
-	if (!gameState->currentRoom->isInBounds(target)) {
-		return false;
+	if (!currentRoom->isInBounds(target)) {
+		return Event(NullEvent, actor);
 	}
-	if (gameState->currentRoom->objectAt(target) == 0) {
-		gameState->currentRoom->removeAt(from, actor);
-		gameState->currentRoom->insertAt(target, actor);
-		return true;
+	if (currentRoom->objectAt(target) == 0) {
+		currentRoom->removeAt(from, actor);
+		currentRoom->insertAt(target, actor);
+		return Event(Move, actor);
 	} else {
-		return false;
+		return Event(Collision, currentRoom->objectAt(target));
 	}
 }
 
-bool Game::movePlayer( Direction d ) {
-	if (moveActor(gameState->playerLocationCoord, d)) {
-		gameState->playerLocationCoord = move(gameState->playerLocationCoord, d);
-		return true;
-	} else {
-		return false;
+Event Game::movePlayer( Direction d ) {
+	Event r = moveActor(playerLocationCoord, d);
+	if(r.event == Move) {
+		playerLocationCoord = move(playerLocationCoord, d);
 	}
-
+	return r;
 }

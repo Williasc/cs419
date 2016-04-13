@@ -1,7 +1,7 @@
 // implementation of class Room
 
 #include "room.h"
-#include <exception>
+#include "gameExceptions.h"
 #include <cstdio>
 
 Room::Room( int roomId, Coord dim ) :
@@ -22,17 +22,15 @@ Room::Room( int roomId, Coord dim, Coord sPoint, string name,
 	spaces = vector<vector<Space> >(dim.x, col);
 	this->name = name;
 	this->description = description;
-	if (sPoint.x >= 0 && sPoint.x < dimensions.x &&
-			sPoint.y >= 0 && sPoint.y < dimensions.y) {
+	if (isInBounds(sPoint)) {
 		spawnPoint = sPoint;
 	} else {
-		throw(exception());
+		throw(invalidCoordException("location out of game map bounds"));
 	}
 }
 
 bool Room::removeAt( Coord xy, GameActor* obj ) {
-	if (xy.x < 0 || xy.x > this->getDimensions().x || xy.y < 0
-			|| xy.y > this->getDimensions().y) {
+	if (!isInBounds(xy)) {
 		throw("location out of game map bounds");
 	}
 	// if the object is in this location, remove it
@@ -45,9 +43,8 @@ bool Room::removeAt( Coord xy, GameActor* obj ) {
 }
 
 bool Room::insertAt( Coord xy, GameActor* obj ) {
-	if (xy.x < 0 || xy.x > this->getDimensions().x || xy.y < 0
-			|| xy.y > this->getDimensions().y) {
-		throw("location out of game map bounds");
+	if (!isInBounds(xy)) {
+		throw(invalidCoordException("location out of game map bounds"));
 	}
 	// if no object is in this location, insert the object
 	if (spaces[xy.x][xy.y].contents == 0) {
@@ -60,7 +57,7 @@ bool Room::insertAt( Coord xy, GameActor* obj ) {
 
 // for testing purposes
 void Room::print() {
-	printf("%s\n\n%s\n\n", name.c_str(), description.c_str());
+	//printf("%s\n\n%s\n\n", name.c_str(), description.c_str());
 	for (int j = 0; j < dimensions.y; j++) {
 		for (int i = 0; i < dimensions.x; i++) {
 			if (objectAt(Coord(i, j)) == 0) {
@@ -74,10 +71,10 @@ void Room::print() {
 }
 
 bool Room::isInBounds(Coord xy) {
-	if( xy.x < 0 || xy.x >= dimensions.x ||
-		xy.y < 0 || xy.y >= dimensions.y	) {
-		return false;
-	} else {
+	if( xy.x >= 0 && xy.x < dimensions.x &&
+		xy.y >= 0 && xy.y < dimensions.y ) {
 		return true;
+	} else {
+		return false;
 	}
 }

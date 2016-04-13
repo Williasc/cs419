@@ -1,8 +1,8 @@
+// implementation of GameActor class
+
 #include "gameActor.h"
 #include "coord.h"
 #include "gameMap.h"
-
-
 
 int Character::alterHealth( int amount )
 {

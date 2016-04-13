@@ -9,7 +9,7 @@ using namespace std;
 #include "gameActor.h"
 #include "room.h"
 #include "gameMap.h"
-#include "gameState.h"
+//#include "gameState.h"
 #include "game.h"
 
 int main() {
@@ -19,7 +19,7 @@ int main() {
 	GameMap* gm = new GameMap(Coord(7, 5));
 
 	// Let's also create another character
-	Character* c = new Character(1, string("enemy"), 50, 0);
+	Character* c = new Character(1, string("Blorg the Ripper"), 50, 0, false);
 	c->symbol = 'E';
 
 	// Create a room to put into the map
@@ -60,7 +60,14 @@ int main() {
 		default:
 			continue;
 		}
-		g->movePlayer(d);
+
+		Event e = g->movePlayer(d);
+		if(e.event==Collision) {
+			printf("You encounter %s.\n\n", e.subject->getName().c_str());
+			}
+
+
+
 		r->print();
 	}
 

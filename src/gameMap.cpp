@@ -1,4 +1,5 @@
 #include "gameMap.h"
+#include "gameExceptions.h"
 #include <cstdio>
 
 GameMap::GameMap( Coord xy ) {
@@ -10,7 +11,7 @@ GameMap::GameMap( Coord xy ) {
 
 void GameMap::insertRoom( Room* r, Coord xy ) {
 	if (xy.x < 0 || xy.x >= dimensions.x || xy.y < 0 || xy.y >= dimensions.y) {
-		throw("Room coordinates outside game map");
+		throw(invalidCoordException("Room coordinates outside game map"));
 
 	}
 	rooms[xy.x][xy.y] = r;
